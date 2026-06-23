@@ -1,0 +1,11 @@
+{
+  "name": "product-spec-interviewer",
+  "description": "Manually-invoked product & technology requirements interview that turns a raw idea into a detailed spec, an executive summary, and a decision log.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Todd"
+  },
+  "homepage": "https://github.com/toddsherman/product-spec-interviewer",
+  "repository": "https://github.com/toddsherman/product-spec-interviewer",
+  "keywords": ["product", "requirements", "spec", "prd", "interview", "discovery"]
+}

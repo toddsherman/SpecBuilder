@@ -1,0 +1,15 @@
+{
+  "name": "spec-tools",
+  "owner": {
+    "name": "Todd",
+    "email": "656005+toddsherman@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "product-spec-interviewer",
+      "source": "./plugins/product-spec-interviewer",
+      "description": "Manually-invoked product & technology requirements interview that turns a raw idea into a detailed spec, an executive summary, and a decision log.",
+      "version": "1.0.0"
+    }
+  ]
+}
