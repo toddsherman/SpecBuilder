@@ -33,6 +33,8 @@ easy to break by accident:
 
 - Frontmatter sets `disable-model-invocation: true` — the command is **manual only** and
   must never auto-fire. Don't remove this. The READMEs promise this behavior to users.
+- Keep `argument-hint` quoted (`"[your idea — optional]"`) so YAML parsers treat it as a
+  string rather than a single-element array.
 - It is invoked as `/product-spec-interviewer:spec-interview` when loaded as a plugin
   (plugin commands are namespaced), or as `/spec-interview` when the bare command file is
   copied into `~/.claude/commands/`. Same file, different invocation prefix.
@@ -43,8 +45,10 @@ easy to break by accident:
   every technology in plain language before asking the user to choose; establish build
   stage (prototype / MVP / production-at-scale) first and let it drive all recommendations;
   bias toward speed-to-validation while flagging expensive-to-reverse decisions; ask in
-  batches of 3–5 continuously-numbered questions; web-check concrete tool/version picks for
-  currency before recommending them.
+  batches of 3–5 continuously-numbered questions; present option-based questions as a
+  markdown table with rows `A`, `B`, `C`, `D`… (columns: Option, Description, Pros, Cons),
+  marking the recommended option directly in the table with a short rationale below;
+  web-check concrete tool/version picks for currency before recommending them.
 
 ## Testing a change
 
@@ -52,7 +56,7 @@ There is nothing to compile or run. To exercise a change, load the plugin into a
 interactive Claude Code session and invoke the command:
 
 ```bash
-claude --plugin-dir /path/to/product-spec-interviewer
+claude --plugin-dir /path/to/SpecBuilder/plugins/product-spec-interviewer
 # then in the session:
 /product-spec-interviewer:spec-interview a couch-to-5k app for nervous beginners
 ```
@@ -60,6 +64,6 @@ claude --plugin-dir /path/to/product-spec-interviewer
 Or install through the marketplace flow:
 
 ```
-/plugin marketplace add toddsherman/product-spec-interviewer
+/plugin marketplace add toddsherman/SpecBuilder
 /plugin install product-spec-interviewer@spec-tools
 ```

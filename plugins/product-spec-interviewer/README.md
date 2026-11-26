@@ -2,9 +2,9 @@
 
 A Claude Code plugin with one manually-invoked slash command, `spec-interview`.
 It runs a structured product & technology requirements interview: you bring a raw
-idea, it interviews you in small batches of options-with-recommendations, and it
-writes the result to three editable files — `spec.md`, `summary.md`, and
-`decisions.md`.
+idea, it interviews you in small batches with structured option tables and clear
+recommendations, and it writes the result to three editable files — `spec.md`,
+`summary.md`, and `decisions.md`.
 
 It is **manual only**. It will never fire on its own; you start it by typing the
 command.
@@ -18,21 +18,29 @@ command.
   MVP, or a production-at-scale system, and lets that drive every tech
   recommendation (biased toward speed-to-validation, with expensive-to-reverse
   decisions flagged).
-- Asks 3–5 questions per batch, numbered continuously, with options and a clear
-  recommendation where real alternatives exist.
+- Asks 3–5 questions per batch, numbered continuously, using a structured table
+  (rows `A`, `B`, `C`, `D`… with **Option**, **Description**, **Pros**, and
+  **Cons**) that marks the recommended option directly and explains why.
 - Checkpoints every few batches (what's locked / confidence / what's open) and
   honors "write it now" and "you choose" at any time.
 - Web-checks the actual tool/version picks for currency before recommending them.
 - Builds the spec as a living document so you can correct it mid-stream, and
-  supports resuming a session by pasting the in-progress files back in.
+  supports resuming a session from existing files in the working directory or by
+  pasting in-progress files back in.
 
 ## Install & use (plugin)
 
-The simplest local route — point Claude Code at the plugin directory when you
-launch it:
+Install through the marketplace inside an interactive Claude Code session:
+
+```
+/plugin marketplace add toddsherman/SpecBuilder
+/plugin install product-spec-interviewer@spec-tools
+```
+
+Or load the plugin directly from a local clone when launching Claude Code:
 
 ```bash
-claude --plugin-dir /path/to/product-spec-interviewer
+claude --plugin-dir /path/to/SpecBuilder/plugins/product-spec-interviewer
 ```
 
 Then, inside the session:
@@ -45,17 +53,13 @@ Then, inside the session:
 `/product-spec-interviewer:spec-interview`. You can also pass your idea inline:
 `/product-spec-interviewer:spec-interview a couch-to-5k app for nervous beginners`.)
 
-To distribute it to others or load it without the `--plugin-dir` flag every time,
-add a marketplace manifest and install through `/plugin` — see the Claude Code
-plugins documentation for the marketplace flow.
-
 ## Prefer to just type `/spec-interview`?
 
 If you don't need the plugin packaging and want the bare command name, copy the
-single command file to your personal commands directory:
+single command file from the repo root into your personal commands directory:
 
 ```bash
-cp commands/spec-interview.md ~/.claude/commands/spec-interview.md
+cp plugins/product-spec-interviewer/commands/spec-interview.md ~/.claude/commands/spec-interview.md
 ```
 
 Loose command files in `~/.claude/commands/` are **not** namespaced, so you'd

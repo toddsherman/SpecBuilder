@@ -1,6 +1,6 @@
 ---
 description: Structured product & technology requirements interview that turns a raw idea into a detailed spec, an executive summary, and a decision log. Manual only — type the command to start.
-argument-hint: [your idea — optional]
+argument-hint: "[your idea — optional]"
 disable-model-invocation: true
 ---
 
@@ -19,6 +19,10 @@ Drive toward a buildable spec.
 ---
 
 ## Starting the session
+
+If `spec.md` and/or `decisions.md` already exist in the working directory, check
+whether the user wants to resume that spec or start fresh before overwriting
+anything (see **Resuming a session later**).
 
 If the user passed text after the command, treat it as their initial idea and
 begin from there — acknowledge it briefly and go straight into the interview.
@@ -81,17 +85,32 @@ the user's answers before sending the next.
 is 1–5 (or however many), the next batch continues from there (6, 7, 8…), and so
 on. Do not restart numbering with each batch.
 
-For each question, **adapt the format to the question**:
+For each numbered question, **adapt the format to the question**:
 
 - When there are **genuine alternatives** (most technology and design choices),
-  present **3–5 options**, each with a brief analysis of its benefits and
-  downsides, and then **state which one you recommend and why**. This is the
-  default and most valuable mode — lean on it for the choices that matter.
+  present **3–5 options** as a markdown table where each row is an option
+  (`A`, `B`, `C`, `D`, and `E` if needed) and the columns are **Option**,
+  **Description**, **Pros**, and **Cons**. Call out your pick directly in the
+  **Option** column (for example, `**B (Recommended)**`), and add a short
+  **Recommendation** line right below the table explaining *why* you recommend
+  it for this build stage. This is the default and most valuable mode — lean on
+  it for the choices that matter.
 - When the question is **inherently open** ("what is the core problem you're
   solving?"), just ask it plainly. Do not manufacture fake multiple-choice
   options for a question that doesn't have them.
 - When **one answer clearly dominates**, say so directly and simply ask the user
   to confirm rather than padding out alternatives to look balanced.
+
+Use this table format for every numbered question that presents options:
+
+| Option | Description | Pros | Cons |
+| --- | --- | --- | --- |
+| **A** | Plain-language summary of option A | Key benefits | Key downsides |
+| **B (Recommended)** | Plain-language summary of option B | Key benefits | Key downsides |
+| **C** | Plain-language summary of option C | Key benefits | Key downsides |
+| **D** | Plain-language summary of option D | Key benefits | Key downsides |
+
+**Recommendation:** Option B — one or two sentences on why it is the right pick for this build stage and constraints.
 
 Keep momentum. You are mining for a buildable understanding, not interrogating.
 
@@ -110,8 +129,12 @@ skip a dimension on purpose, note briefly that you're skipping it and why.
   do, and what is the *single* primary metric that tells you it's working?
 - **Scope & non-goals** — what's explicitly in, and just as importantly, what's
   explicitly out for now?
+- **Key user flows & edge cases** — what are the primary end-to-end journeys,
+  and what empty, error, or failure states must be handled cleanly?
 - **Platform / form factor** — web app, native mobile, desktop, CLI, API,
   something embedded?
+- **UI & design direction** — if there is an interface, what are the key
+  screens, visual feel, responsiveness, and accessibility expectations?
 - **Data & content model** — what are the core entities, and what data does the
   product hold, produce, and rely on?
 - **Role of AI / ML** — is there an intelligent component, and if so, where does
@@ -196,31 +219,42 @@ can read the current state and correct it. Grounding the spec in their reactions
 to real text catches misunderstandings far earlier than answered questions alone
 would. The intermediate versions will be rough — that's expected and fine.
 
+Before writing for the first time, check whether `spec.md`, `summary.md`, or
+`decisions.md` already exist in the working directory so you never overwrite
+unrelated files without asking (if needed, agree on a subfolder such as
+`docs/spec/`). If you are running in an environment without file-write access,
+present the living draft inline as clearly labeled markdown blocks instead.
+
 ---
 
 ## Producing the output
 
 When you're confident (per the definition above), or the moment the user says
-"write it now," produce **three separate files** in the working directory. They
-are separate on purpose, so each can be edited independently:
+"write it now," produce **three separate files** in the agreed output directory
+(default: the working directory). They are separate on purpose, so each can be
+edited independently:
 
 - **`spec.md`** — the detailed product & technology specification.
 - **`summary.md`** — a one-page executive summary.
 - **`decisions.md`** — the decision log, capturing the rationale behind every
   significant choice.
 
+If you do not have file-write access in your environment, output each of the
+three files in full as its own clearly labeled markdown block so the user can
+save them directly.
+
 **Match the depth to the build stage.** A throwaway prototype gets a tight,
 decisive spec that doesn't bury the few decisions that matter. A
 production-at-scale system gets the full treatment — complete architecture, data
-model, the works. Honor "extremely detailed" where detail earns its keep; don't
-inflate a prototype into a document nobody will read.
+model, the works. Go deep where detail earns its keep; don't inflate a prototype
+into a document nobody will read.
 
 After the three files exist, **offer** (don't automatically generate) two
 optional extras, since they're project-specific and only useful once the user is
 actually ready to build:
 
 - a **starter repo scaffold** — a proposed file tree with stub files they could
-  hand straight to Claude Code, and
+  hand straight to a coding agent, and
 - a **simple architecture diagram**.
 
 Use the exact templates below. Fill every bracketed placeholder; delete any
@@ -252,15 +286,20 @@ metric that indicates success, plus any secondary metrics.]
 [Prototype / MVP / production-at-scale — and what that choice implies for how
 much engineering rigor and future-proofing is warranted.]
 
-## 6. Functional requirements
-[What the product must do, as concrete capabilities. Prioritized.]
+## 6. Functional requirements & key user flows
+[Concrete, prioritized capabilities, followed by the core end-to-end user
+journeys and critical empty, edge, or error states.]
 
-## 7. Non-functional requirements
+## 7. UI & design direction
+[Key screens or views, visual and interaction feel, responsiveness, and
+accessibility expectations. Delete if not applicable.]
+
+## 8. Non-functional requirements
 [Performance, scale, reliability, security, privacy, accessibility — whichever
 apply. Be specific where it matters; say "not a concern at this stage" where it
 honestly doesn't.]
 
-## 8. Recommended technology stack
+## 9. Recommended technology stack
 For each layer: what it is in plain language, why it was chosen, what
 alternatives were considered, and how expensive it would be to change later.
 
@@ -272,28 +311,29 @@ alternatives were considered, and how expensive it would be to change later.
 - **AI / ML (if any):** [...]
 - **Key integrations:** [...]
 
-## 9. High-level architecture
+## 10. High-level architecture
 [How the pieces fit together and how data flows between them.]
 
-## 10. Data & content model
+## 11. Data & content model
 [Core entities, their key fields, and the relationships between them.]
 
-## 11. AI / ML approach
+## 12. AI / ML approach
 [If applicable: where the intelligence lives, model choices and why, the data
 flow, and how quality will be measured/evaluated. Delete if not applicable.]
 
-## 12. Phased build plan
+## 13. Phased build plan
 [Milestones from first working version onward, ordered so the riskiest or most
-informative thing comes early.]
+informative thing comes early. Include clear verification or acceptance criteria
+for each milestone so a builder or coding agent can prove it works.]
 
-## 13. Risks & open questions
+## 14. Risks & open questions
 [Known unknowns and things that could derail the build.]
 
-## 14. Expensive-to-reverse decisions
+## 15. Expensive-to-reverse decisions
 [The specific choices that are costly to undo later and therefore deserve extra
 care now — called out explicitly so they aren't treated as casually as the rest.]
 
-## 15. Anything else
+## 16. Anything else
 [Project-specific notes that don't fit the sections above. Catch-all.]
 
 ## Appendix: Glossary
@@ -368,9 +408,9 @@ Each entry records a significant choice and the reasoning behind it, so future-y
 
 ## Resuming a session later
 
-Real discovery can span multiple sittings. If the user pastes back an
-in-progress `spec.md` and/or `decisions.md` at the start, **read them, give a
-short summary of where things currently stand** (what's settled and what's still
-open), and continue the interview from the open items rather than starting over.
-The living-document approach above is exactly what makes this clean — the files
-carry the state forward.
+Real discovery can span multiple sittings. If `spec.md` and/or `decisions.md`
+already exist in the working directory — or if the user pastes them back in at
+the start — **read them, give a short summary of where things currently stand**
+(what's settled and what's still open), and continue the interview from the open
+items rather than starting over. The living-document approach above is exactly
+what makes this clean — the files carry the state forward.
